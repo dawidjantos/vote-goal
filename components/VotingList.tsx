@@ -6,13 +6,55 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import {Button} from "@/components/ui/button";
-import {useEffect} from "react";
+import {useState} from "react";
 import {vote} from "@/actions/vote";
 import {toast} from "sonner"
+import {useRouter} from 'next/navigation'
+import SponsorCard from "@/components/SponsorCard";
 
 
 const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
+
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+
+  const sponsorsList = [
+    {img: '/images/sponsors/1c.png', title: 'SYSTEMY ZABEZPIECZEŃ', desc: '', link: 'https://tprzybylski.pl'},
+    {
+      img: '/images/sponsors/2c.png',
+      title: 'Reklama na monitorach LCD w komunikacji miejskiej',
+      desc: '',
+      link: 'http://www.dv-box.pl/'
+    },
+    {
+      img: '/images/sponsors/5c.png',
+      title: 'Autoryzowany dealer Volvo',
+      desc: '',
+      link: 'https://wadowscy.volvocars-partner.pl/'
+    },
+    {
+      img: '/images/sponsors/16c2.png',
+      title: 'Firma Profix to wiodący krajowy generalny wykonawca obiektów przemysłowych.',
+      desc: '', link: 'https://tprzybylski.pl'
+    },
+    {img: '/images/sponsors/9c.png', title: 'Klub piłkarski Wisła Kraków S.A.', desc: '', link: 'https://wislakrakow.com/'},
+    {img: '/images/sponsors/11c.png', title: 'Centrum dystrybucji napoi i wód', desc: '', link: 'https://tprzybylski.pl'},
+    {img: '/images/sponsors/10c.png', title: 'Piłkarska liga dla firm', desc: '', link: 'https://tprzybylski.pl'},
+    {img: '/images/sponsors/13c.png', title: 'SYSTEMY ZABEZPIECZEŃ', desc: '', link: 'https://tprzybylski.pl'},
+  ];
+
+  const rand = Math.floor(Math.random() * sponsorsList.length);
+
   const onClick = (value: string) => {
     vote(ip, parseInt(value)).then(r => {
       if (r.info == "error") {
@@ -26,21 +68,26 @@ const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
         })
       }
       if (r.info == "success") {
-        toast.success("Głos oddany poprawnie", {
-          description: "Dziękujemy!",
-        })
+        setOpen(prevState => !prevState);
       }
 
     })
 
   }
 
+  const closeDialog = () => {
+    console.log('close')
+    setOpen(prevState => !prevState);
+    router.push('https://tprzybylski.pl/');
+  }
+
   return (
     <div className='flex w-full mt-20 flex-col gap-5'>
       {schools ?
         schools.map((school: any) => {
+          console.log(school);
           return (
-            <Card className='flex w-full items-center justify-between bg-blue-50/50' key={school.id}>
+            <Card className='flex w-full items-center justify-between bg-blue-100/80' key={school.id}>
               <CardHeader>
                 <CardTitle>{school.name}</CardTitle>
               </CardHeader>
@@ -51,6 +98,21 @@ const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
           )
         }) : ''
       }
+      <AlertDialog open={open} onOpenChange={setOpen}>
+        <AlertDialogContent className='bg-white'>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Dziękujemy za oddany głos !!</AlertDialogTitle>
+            <AlertDialogDescription className='text-lg text-gray-700'>
+              Sponsorem VIII edycji turnieju piłkarskiego &quot;Bezpieczna szkoła za gola&quot; jest:
+            </AlertDialogDescription>
+            <SponsorCard img={sponsorsList[rand].img} title={sponsorsList[rand].title} desc={sponsorsList[rand].desc}
+                         link={sponsorsList[rand].link}/>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => closeDialog()}>OK</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
