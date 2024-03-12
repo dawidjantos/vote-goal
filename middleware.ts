@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
   console.log(request.headers.get('referer'));
   if(request.nextUrl.pathname.startsWith('/admin')){
     return NextResponse.rewrite(new URL('/', request.url))
-  }else if (request.headers.get('referer') !== 'http://tprzybylski.pl/turniej9') {
+  }else if (request.headers.get('referer') !== 'http://tprzybylski.pl/') {
     return NextResponse.redirect('http://tprzybylski.pl');
   } else {
     return NextResponse.rewrite(new URL('/', request.url))
