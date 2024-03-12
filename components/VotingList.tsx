@@ -29,7 +29,7 @@ const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
   const router = useRouter();
 
   const sponsorsList = [
-    {img: '/images/sponsors/1c.png', title: 'SYSTEMY ZABEZPIECZEŃ', desc: '', link: 'https://tprzybylski.pl'},
+    {img: '/images/sponsors/1c.png', title: 'SYSTEMY ZABEZPIECZEŃ', desc: '', link: 'http://tprzybylski.pl'},
     {
       img: '/images/sponsors/2c.png',
       title: 'Reklama na monitorach LCD w komunikacji miejskiej',
@@ -45,12 +45,12 @@ const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
     {
       img: '/images/sponsors/16c2.png',
       title: 'Firma Profix to wiodący krajowy generalny wykonawca obiektów przemysłowych.',
-      desc: '', link: 'https://tprzybylski.pl'
+      desc: '', link: 'http://tprzybylski.pl'
     },
     {img: '/images/sponsors/9c.png', title: 'Klub piłkarski Wisła Kraków S.A.', desc: '', link: 'https://wislakrakow.com/'},
-    {img: '/images/sponsors/11c.png', title: 'Centrum dystrybucji napoi i wód', desc: '', link: 'https://tprzybylski.pl'},
-    {img: '/images/sponsors/10c.png', title: 'Piłkarska liga dla firm', desc: '', link: 'https://tprzybylski.pl'},
-    {img: '/images/sponsors/13c.png', title: 'SYSTEMY ZABEZPIECZEŃ', desc: '', link: 'https://tprzybylski.pl'},
+    {img: '/images/sponsors/11c.png', title: 'Centrum dystrybucji napoi i wód', desc: '', link: 'http://tprzybylski.pl'},
+    {img: '/images/sponsors/10c.png', title: 'Piłkarska liga dla firm', desc: '', link: 'http://tprzybylski.pl'},
+    {img: '/images/sponsors/13c.png', title: 'SYSTEMY ZABEZPIECZEŃ', desc: '', link: 'http://tprzybylski.pl'},
   ];
 
   const rand = Math.floor(Math.random() * sponsorsList.length);
@@ -76,9 +76,8 @@ const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
   }
 
   const closeDialog = () => {
-    console.log('close')
     setOpen(prevState => !prevState);
-    router.push('https://tprzybylski.pl/');
+    router.push('http://tprzybylski.pl/');
   }
 
   return (

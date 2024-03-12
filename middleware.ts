@@ -5,7 +5,7 @@ import type {NextRequest} from 'next/server'
 export function middleware(request: NextRequest) {
 
   if (request.cookies.has('referer')) {
-    return NextResponse
+    return NextResponse.rewrite(new URL('/', request.url))
   } else {
     console.log(`referer: ${request.headers.get('referer')}`);
 
