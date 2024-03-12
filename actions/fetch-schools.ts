@@ -8,6 +8,7 @@ export const fetchSchools = async () => {
 
     return schools
   } catch (e) {
+    console.log(e)
     return null;
   }
 

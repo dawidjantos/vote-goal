@@ -22,7 +22,8 @@ export default function RootLayout({
     <body className={cn(
       'min-h-screen font-sans antialiased grainy',
       inter.className
-    )}>
+    )}
+    >
     <Navbar/>
     {children}
     <Toaster richColors position="bottom-center"/>
