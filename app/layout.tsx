@@ -4,6 +4,7 @@ import "./globals.css";
 import {cn} from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import {Toaster} from "@/components/ui/sonner"
+import Footer from "@/components/Footer";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -20,12 +21,13 @@ export default function RootLayout({
   return (
     <html lang="pl">
     <body className={cn(
-      'min-h-screen font-sans antialiased grainy',
+      'min-h-screen flex-col font-sans antialiased grainy',
       inter.className
     )}
     >
     <Navbar/>
     {children}
+    <Footer/>
     <Toaster richColors position="bottom-center"/>
     </body>
     </html>
