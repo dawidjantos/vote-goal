@@ -95,7 +95,7 @@ const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
   }
 
   return (
-    <div className='flex w-full mt-20 flex-col gap-5'>
+    <div className='flex w-full mt-2 flex-col gap-5'>
       {schools ?
         schools.map((school: any, index: number) => {
           return (
