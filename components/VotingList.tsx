@@ -21,11 +21,12 @@ import {vote} from "@/actions/vote";
 import {toast} from "sonner"
 import {useRouter} from 'next/navigation'
 import SponsorCard from "@/components/SponsorCard";
-
+import {Loader2} from "lucide-react"
 
 const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
 
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(new Set());
   const router = useRouter();
 
   const sponsorsList = [
@@ -37,26 +38,25 @@ const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
       link: 'http://www.dv-box.pl/'
     },
     {
-      img: '/images/sponsors/5c.png',
-      title: 'Autoryzowany dealer Volvo',
+      img: '/images/sponsors/9c.png',
+      title: 'Klub piłkarski Wisła Kraków S.A.',
       desc: '',
-      link: 'https://wadowscy.volvocars-partner.pl/'
+      link: 'https://wislakrakow.com/'
     },
-    {
-      img: '/images/sponsors/16c2.png',
-      title: 'Firma Profix to wiodący krajowy generalny wykonawca obiektów przemysłowych.',
-      desc: '', link: 'http://tprzybylski.pl'
-    },
-    {img: '/images/sponsors/9c.png', title: 'Klub piłkarski Wisła Kraków S.A.', desc: '', link: 'https://wislakrakow.com/'},
-    {img: '/images/sponsors/11c.png', title: 'Centrum dystrybucji napoi i wód', desc: '', link: 'http://tprzybylski.pl'},
-    {img: '/images/sponsors/10c.png', title: 'Piłkarska liga dla firm', desc: '', link: 'http://tprzybylski.pl'},
-    {img: '/images/sponsors/13c.png', title: 'SYSTEMY ZABEZPIECZEŃ', desc: '', link: 'http://tprzybylski.pl'},
+    {img: '/images/sponsors/10c.png', title: 'Piłkarska liga dla firm', desc: '', link: 'http://www.biznesliga.com.pl'},
   ];
 
   const rand = Math.floor(Math.random() * sponsorsList.length);
 
-  const onClick = (value: string) => {
+  const onClick = (value: string, index: number) => {
+    setLoading((prev) => new Set([prev, index]))
     vote(ip, parseInt(value)).then(r => {
+      setLoading((prev) => {
+        const updated = new Set(prev);
+        updated.delete(index);
+        return updated;
+      })
+
       if (r.info == "error") {
         toast.error("Brak możliwośći głosowania. ", {
           description: "Można oddać głos po upływie 30 minut od poprzedniego głosowania",
@@ -70,10 +70,8 @@ const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
       if (r.info == "success") {
         setOpen(prevState => !prevState);
       }
-
-    })
-
-  }
+    });
+  };
 
   const closeDialog = () => {
     setOpen(prevState => !prevState);
@@ -83,15 +81,16 @@ const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
   return (
     <div className='flex w-full mt-20 flex-col gap-5'>
       {schools ?
-        schools.map((school: any) => {
-          console.log(school);
+        schools.map((school: any, index: number) => {
           return (
-            <Card className='flex w-full items-center justify-between bg-blue-100/80' key={school.id}>
+            <Card className='flex w-full items-center justify-between bg-blue-100/80' key={index}>
               <CardHeader>
                 <CardTitle>{school.name}</CardTitle>
               </CardHeader>
               <CardFooter className='flex pt-6 items-center justify-between'>
-                <Button onClick={() => onClick(school.id)}>GŁOSUJ</Button>
+                <Button className='w-[90px]' onClick={() => onClick(school.id, index)}
+                        disabled={loading.has(index)}>{loading.has(index) ?
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin"/> : 'GŁOSUJ'}</Button>
               </CardFooter>
             </Card>
           )

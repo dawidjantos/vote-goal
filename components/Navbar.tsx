@@ -5,9 +5,9 @@ import Image from "next/image";
 const Navbar = () => {
   return (
     <nav
-      className='h-15 inset-x-0 top-0 z-30 w-full border-b border-gray-200 bg-blue-400/75 backdrop-blur-lg transition-all'>
+      className='h-28 inset-x-0 top-0 z-30 w-full border-b border-gray-200 bg-blue-400/75 backdrop-blur-lg transition-all'>
       <MaxWidthWrapper>
-        <div className='flex h-15 gap-x-20 items-center justify-items-start border-b border-zinc-200'>
+        <div className='flex h-28 gap-x-20 items-center justify-items-start border-b border-zinc-200'>
           <Link href="/" className='flex z-40 font-semibold'>
             <Image src="/images/logo_bezp-szkola.png" alt='logo' height={110} width={190}/>
           </Link>
