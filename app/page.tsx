@@ -22,9 +22,8 @@ const Home = async () => {
         <h3 className='font-bold text-xl text-blue-950 pb-2'>Jak głosować?</h3>
         <ul className='text-lg text-blue-950 pb-2'>
           <li>1. Głos na daną szkołę można oddać poprzez naciśnięcie przycisku GŁOSUJ przy danej szkole</li>
-          <li>2. Po poprawnym oddaniu głosu wyświetli się losowo wybrany sponsor </li>
-          <li>3. Kolejny głos można oddać dopiero po upływie <span className='text-destructive font-bold'>30 minut</span></li>
-          <li>4. <span className='text-destructive font-bold'>UWAGA!</span> Wszelkie próby automatyzacji procesu głosowanie będą skutkowały dyskwalifikacją szkoły na która głosy będą oddawane</li>
+          <li>2. Kolejny głos można oddać dopiero po upływie <span className='text-destructive font-bold'>30 minut</span></li>
+          <li>3. <span className='text-destructive font-bold'>UWAGA!</span> Wszelkie próby automatyzacji procesu głosowanie będą skutkowały dyskwalifikacją szkoły na która głosy będą oddawane</li>
         </ul>
       </div>
       <div className='w-full flex flex-col gap-x-14 justify-center items-center'>
