@@ -5,16 +5,12 @@ import type {NextRequest} from 'next/server'
 export function middleware(request: NextRequest) {
 
   if (request.cookies.has('referer')) {
-    return NextResponse.rewrite(new URL('/', request.url))
+    return NextResponse.next();
   } else {
-    console.log(`referer: ${request.headers.get('referer')}`);
-
-    if (request.nextUrl.pathname.startsWith('/admin')) {
-      return NextResponse.rewrite(new URL('/', request.url))
-    } else if (request.headers.get('referer') === 'http://tprzybylski.pl/') {
+    if (request.nextUrl.pathname.startsWith('/admin') || request.headers.get('referer') === 'http://tprzybylski.pl/') {
       let now = new Date();
-      now.setTime(now.getTime() + 1 * 3600 * 1000);
-      const response = NextResponse.next()
+      now.setTime(now.getTime() + 24 * 3600 * 1000);
+      const response = NextResponse.redirect(new URL('/', request.url))
       response.cookies.set({
         name: 'referer',
         value: 'referer',

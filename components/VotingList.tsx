@@ -22,6 +22,7 @@ import {toast} from "sonner"
 import {useRouter} from 'next/navigation'
 import SponsorCard from "@/components/SponsorCard";
 import {Loader2} from "lucide-react"
+import {GET_SPONSORS} from "@/lib/sponsors";
 
 const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
 
@@ -29,38 +30,7 @@ const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
   const [loading, setLoading] = useState(new Set());
   const router = useRouter();
 
-  const sponsorsList = [
-    {
-      img: '/images/sponsors/1c.png',
-      title: 'SYSTEMY ZABEZPIECZEŃ',
-      desc: '',
-      link: 'http://tprzybylski.pl',
-      width: 260,
-      height: 94
-    },
-    {
-      img: '/images/sponsors/2c.png',
-      title: 'Reklama na monitorach LCD w komunikacji miejskiej',
-      desc: '',
-      link: 'http://www.dv-box.pl/',
-      width: 240, height: 85
-    },
-    {
-      img: '/images/sponsors/9c.png',
-      title: 'Klub piłkarski Wisła Kraków S.A.',
-      desc: '',
-      link: 'https://wislakrakow.com/',
-      width: 117, height: 150
-    },
-    {
-      img: '/images/sponsors/10c.png',
-      title: 'Piłkarska liga dla firm',
-      desc: '',
-      link: 'http://www.biznesliga.com.pl',
-      width: 300,
-      height: 100
-    },
-  ];
+  const sponsorsList = GET_SPONSORS();
 
   const rand = Math.floor(Math.random() * sponsorsList.length);
 
@@ -91,11 +61,11 @@ const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
 
   const closeDialog = () => {
     setOpen(prevState => !prevState);
-    router.push('http://tprzybylski.pl/');
+    router.push('/preview');
   }
 
   return (
-    <div className='flex w-full mt-2 flex-col gap-5'>
+    <div className='flex w-full mt-2 mb-7 flex-col gap-5'>
       {schools ?
         schools.map((school: any, index: number) => {
           return (
