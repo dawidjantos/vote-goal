@@ -31,7 +31,7 @@ export const vote = async (ip: string, schoolId: number) => {
       }
     })
   } else {
-    addIp(ip);
+    await addIp(ip);
   }
 
   return {info: "success"};
@@ -84,7 +84,6 @@ const voting = async (school_id: number) => {
           liczba_glosow: 1
         }
       });
-
       return res;
     } catch (e) {
       return null;
