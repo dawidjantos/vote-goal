@@ -61,7 +61,7 @@ const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
 
   const closeDialog = () => {
     setOpen(prevState => !prevState);
-    router.push('/preview');
+    router.push('http://tprzybylski.pl');
   }
 
   return (
