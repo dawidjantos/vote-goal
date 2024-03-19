@@ -6,6 +6,8 @@ import Navbar from "@/components/Navbar";
 import {Toaster} from "@/components/ui/sonner"
 import Footer from "@/components/Footer";
 
+import { AxiomWebVitals } from 'next-axiom';
+
 const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
@@ -25,6 +27,7 @@ export default function RootLayout({
       inter.className
     )}
     >
+    <AxiomWebVitals />
     <Navbar/>
     {children}
     <Footer/>
