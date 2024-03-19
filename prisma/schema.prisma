@@ -11,10 +11,13 @@ generator client {
 }
 
 model Schools {
-  id      Int    @id @default(autoincrement())
-  name    String
-  address String
-  etap1   Etap1?
+  id           Int     @id @default(autoincrement())
+  name         String
+  address      String
+  voting_etap1 Boolean @default(true)
+  voting_etap2 Boolean @default(false)
+  etap1        Etap1?
+  etap2        Etap2?
 }
 
 model Ips {
@@ -24,8 +27,17 @@ model Ips {
 }
 
 model Etap1 {
-  id            Int     @id @default(autoincrement())
-  szkola        Schools @relation(fields: [id_szkoly], references: [id], onDelete: Cascade)
-  id_szkoly     Int     @unique
+  id            Int @id @default(autoincrement())
+  id_szkoly     Int @unique
   liczba_glosow Int
+
+  szkola Schools @relation(fields: [id_szkoly], references: [id], onDelete: Cascade)
+}
+
+model Etap2 {
+  id            Int @id @default(autoincrement())
+  id_szkoly     Int @unique
+  liczba_glosow Int
+
+  szkola Schools @relation(fields: [id_szkoly], references: [id], onDelete: Cascade)
 }

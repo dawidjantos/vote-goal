@@ -24,7 +24,7 @@ import SponsorCard from "@/components/SponsorCard";
 import {Loader2} from "lucide-react"
 import {GET_COLAB} from "@/lib/sponsors";
 
-const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
+const VotingList = ({schools, ip, etap, redirect}: { schools: any, ip: any, etap: 1|2 , redirect: string }) => {
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(new Set());
@@ -36,7 +36,7 @@ const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
 
   const onClick = (value: string, index: number) => {
     setLoading((prev) => new Set([prev, index]))
-    vote(ip, parseInt(value)).then(r => {
+    vote(ip, parseInt(value), etap).then(r => {
       setLoading((prev) => {
         const updated = new Set(prev);
         updated.delete(index);
@@ -61,7 +61,7 @@ const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
 
   const closeDialog = () => {
     setOpen(prevState => !prevState);
-    router.push('/preview');
+    router.push(redirect);
   }
 
   return (
