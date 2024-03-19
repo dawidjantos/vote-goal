@@ -9,14 +9,15 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel"
-import {sponsorInterface} from "@/lib/sponsors";
+import {partnerInterface, sponsorInterface} from "@/lib/sponsors";
 import Image from "next/image";
 import {cn} from "@/lib/utils";
 import {useEffect, useState} from "react";
 import Link from "next/link";
 
-const SponsorsSlider = ({sponsors, orientation, className}: {
-  sponsors: Array<sponsorInterface>,
+const ColabSlider = ({title, data, orientation, className}: {
+  title: string,
+  data: Array<sponsorInterface> | Array<partnerInterface>,
   orientation: "vertical" | "horizontal",
   className?: string
 }) => {
@@ -37,21 +38,21 @@ const SponsorsSlider = ({sponsors, orientation, className}: {
   }, [size, orientation]);
 
   return (<div className={cn("w-full flex-col justify-center items-center", className)}>
-      <h2 className='font-bold text-center text-2xl text-blue-950 sm:text-3xl lg:text-4xl'>Sponsorzy</h2>
+      <h2 className='font-bold text-center text-2xl text-blue-950 sm:text-3xl lg:text-4xl'>{title}</h2>
       <Carousel
         plugins={[plugin.current]}
-        className={cn("mt-10", className)}
+        className={cn("mt-10 mb-10", className)}
         orientation={orientationState}
         opts={{
           loop: true
         }}
       >
         <CarouselContent className='max-h-[800px]'>
-          {sponsors.map((sponsor, index) => (
+          {data.map((item, index) => (
             <CarouselItem key={index}
                           className="flex items-center justify-center basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-              <Link href={sponsor.link} target='_blank'>
-                <Image src={sponsor.img} alt={`${sponsor.title}_img`} width={sponsor.width} height={sponsor.height}/>
+              <Link href={item.link} target='_blank'>
+                <Image src={item.img} alt={`${item.title}_img`} width={item.width} height={item.height}/>
               </Link>
             </CarouselItem>
           ))}
@@ -62,4 +63,4 @@ const SponsorsSlider = ({sponsors, orientation, className}: {
   )
 }
 
-export default SponsorsSlider;
+export default ColabSlider;

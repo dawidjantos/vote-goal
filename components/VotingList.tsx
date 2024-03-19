@@ -22,7 +22,7 @@ import {toast} from "sonner"
 import {useRouter} from 'next/navigation'
 import SponsorCard from "@/components/SponsorCard";
 import {Loader2} from "lucide-react"
-import {GET_SPONSORS} from "@/lib/sponsors";
+import {GET_COLAB} from "@/lib/sponsors";
 
 const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
 
@@ -30,9 +30,9 @@ const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
   const [loading, setLoading] = useState(new Set());
   const router = useRouter();
 
-  const sponsorsList = GET_SPONSORS();
+  const colabList = GET_COLAB().partners.concat(GET_COLAB().sponsors);
 
-  const rand = Math.floor(Math.random() * sponsorsList.length);
+  const rand = Math.floor(Math.random() * colabList.length);
 
   const onClick = (value: string, index: number) => {
     setLoading((prev) => new Set([prev, index]))
@@ -90,11 +90,12 @@ const VotingList = ({schools, ip}: { schools: any, ip: any }) => {
               Sponsorem VIII edycji turnieju piłkarskiego &quot;Bezpieczna szkoła za gola&quot; jest:
             </AlertDialogDescription>
             <SponsorCard
-              img={sponsorsList[rand].img}
-              title={sponsorsList[rand].title}
-              link={sponsorsList[rand].link}
-              width={sponsorsList[rand].width}
-              height={sponsorsList[rand].height}
+              img={colabList[rand].img}
+              title={colabList[rand].title}
+              link={colabList[rand].link}
+              width={colabList[rand].width}
+              height={colabList[rand].height}
+              benefits={colabList[rand].benefits}
             />
           </AlertDialogHeader>
           <AlertDialogFooter>

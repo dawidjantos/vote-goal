@@ -5,8 +5,8 @@ import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import VotingList from "@/components/VotingList";
 import {fetchSchools} from "@/actions/fetch-schools";
 import {headers} from 'next/headers'
-import SponsorsSlider from "@/components/SponsorsSlider";
-import {GET_SPONSORS} from "@/lib/sponsors";
+import ColabSlider from "@/components/ColabSlider";
+import {GET_COLAB} from "@/lib/sponsors";
 
 const Home = async () => {
 
@@ -14,7 +14,7 @@ const Home = async () => {
     .then((values) => {
       return values;
     });
-  const sponsorsList = GET_SPONSORS();
+  const colabList = GET_COLAB();
   const header = headers()
   const ip = process.env.NODE_ENV !== "production" ? (header.get('x-forwarded-for') ?? '127.0.0.1').split(',')[0] : (header.get('x-forwarded-for') ?? '127.0.0.1');
 
@@ -37,8 +37,9 @@ const Home = async () => {
           głosowaniu: </h3>
         <div className='w-full flex flex-col lg:flex-row gap-x-3'>
           <VotingList schools={schools} ip={ip}/>
-          <SponsorsSlider sponsors={sponsorsList} orientation='vertical' className='w-fit max-w-fit'/>
+          <ColabSlider title='Sponsorzy' data={colabList.sponsors} orientation='vertical' className='w-fit max-w-fit'/>
         </div>
+        <ColabSlider title='Partnerzy' data={colabList.partners} orientation='horizontal'/>
       </div>
     </MaxWidthWrapper>
   );

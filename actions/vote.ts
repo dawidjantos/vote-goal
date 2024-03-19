@@ -87,7 +87,7 @@ const voting = async (school_id: number, ip: string) => {
           liczba_glosow: 1
         }
       });
-
+      console.log(res)
       log.info('Zagłosowano z adresu IP na szkołę', {ip: ip, szkola_id: school_id});
       return res;
     } catch (e) {
@@ -107,6 +107,7 @@ const voting = async (school_id: number, ip: string) => {
           }
         }
       });
+      console.log(res)
       log.info('Zagłosowano z adresu IP na szkołę', {ip: ip, szkola_id: school_id});
 
       return res;
