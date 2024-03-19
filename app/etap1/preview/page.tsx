@@ -8,7 +8,7 @@ import {getSchoolsResult} from "@/app/utils";
 export const revalidate = 0;
 
 const Preview = async () => {
-  const schools = await getSchoolsResult();
+  const schools = await getSchoolsResult({etap: 1});
   const sponsorsList = GET_SPONSORS();
 
   return (

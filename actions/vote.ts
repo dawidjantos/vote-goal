@@ -2,14 +2,14 @@
 
 import {db} from "@/lib/db"
 
-export const vote = async (ip: string, schoolId: number) => {
+export const vote = async (ip: string, schoolId: number, etap: 1|2) => {
   const isPossibile = await isPossibileToVote(ip);
 
   if (!isPossibile) {
     return {info: "error"}
   }
 
-  const isVoted = voting(schoolId);
+  const isVoted = voting(schoolId, etap);
 
   if (isVoted === null) {
     return {info: "error2"}
@@ -63,47 +63,82 @@ const addIp = async (ip: any) => {
 
 }
 
-const get_school_votes = async (school_id: number) => {
-  const votes = await db.etap1.findMany({
-    where: {
-      id_szkoly: school_id
-    }
-  });
-
-  return votes;
+const get_school_votes = async (school_id: number,  etap: 1|2) => {
+  if (etap === 1) {
+    const votes = await db.etap1.findMany({
+      where: {
+        id_szkoly: school_id
+      }
+    });
+    return votes;
+  } else if (etap === 2) {
+    const votes = await db.etap2.findMany({
+      where: {
+        id_szkoly: school_id
+      }
+    });
+    return votes;
+  }
+  return [];
 }
 
-const voting = async (school_id: number) => {
-  const school_votes = await get_school_votes(school_id);
+const voting = async (school_id: number, etap: 1|2) => {
+  const school_votes = await get_school_votes(school_id, etap);
 
   if (school_votes.length == 0) {
     try {
-      const res = await db.etap1.create({
-        data: {
-          id_szkoly: school_id,
-          liczba_glosow: 1
-        }
-      });
-      return res;
+      if (etap === 1) {
+        const res = await db.etap1.create({
+          data: {
+            id_szkoly: school_id,
+            liczba_glosow: 1
+          }
+        });
+        return res;
+      } else if (etap === 2) {
+        const res = await db.etap2.create({
+          data: {
+            id_szkoly: school_id,
+            liczba_glosow: 1
+          }
+        });
+        return res;
+      }
+      return []
     } catch (e) {
       return null;
     }
 
   } else {
     try {
-      const res = await db.etap1.update({
-        where: {
-          id_szkoly: school_id,
-        },
-        data: {
-          id_szkoly: school_id,
-          liczba_glosow: {
-            increment: 1,
+      if (etap === 1) {
+        const res = await db.etap1.update({
+          where: {
+            id_szkoly: school_id,
+          },
+          data: {
+            id_szkoly: school_id,
+            liczba_glosow: {
+              increment: 1,
+            }
           }
-        }
-      });
-
-      return res;
+        });
+        return res;
+      } else if (etap === 2) {
+        const res = await db.etap2.update({
+          where: {
+            id_szkoly: school_id,
+          },
+          data: {
+            id_szkoly: school_id,
+            liczba_glosow: {
+              increment: 1,
+            }
+          }
+        });
+        return res;
+      }
+      return []
     } catch (e) {
       return null;
     }
