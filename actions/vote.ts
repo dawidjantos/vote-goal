@@ -1,7 +1,7 @@
 "use server";
 
 import {db} from "@/lib/db"
-import { Logger } from 'next-axiom';
+import {Logger} from 'next-axiom';
 
 const log = new Logger();
 
@@ -12,13 +12,11 @@ export const vote = async (ip: string, schoolId: number) => {
     return {info: "error"}
   }
 
-  const isVoted = voting(schoolId);
+  const isVoted = voting(schoolId, ip);
 
   if (isVoted === null) {
     return {info: "error2"}
   }
-
-  log.info('Zagłosowano z adresu IP na szkołę',{ip:ip, szkola: isVoted});
 
   const findIp = await db.ips.findMany({
     where: {
@@ -78,7 +76,7 @@ const get_school_votes = async (school_id: number) => {
   return votes;
 }
 
-const voting = async (school_id: number) => {
+const voting = async (school_id: number, ip: string) => {
   const school_votes = await get_school_votes(school_id);
 
   if (school_votes.length == 0) {
@@ -89,6 +87,8 @@ const voting = async (school_id: number) => {
           liczba_glosow: 1
         }
       });
+
+      log.info('Zagłosowano z adresu IP na szkołę', {ip: ip, szkola_id: school_id});
       return res;
     } catch (e) {
       return null;
@@ -107,6 +107,7 @@ const voting = async (school_id: number) => {
           }
         }
       });
+      log.info('Zagłosowano z adresu IP na szkołę', {ip: ip, szkola_id: school_id});
 
       return res;
     } catch (e) {
