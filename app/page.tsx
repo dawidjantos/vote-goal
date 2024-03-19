@@ -1,6 +1,7 @@
 "use server";
 
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import { Logger } from 'next-axiom';
 import VotingList from "@/components/VotingList";
 import {fetchSchools} from "@/actions/fetch-schools";
 import {headers} from 'next/headers'
@@ -8,6 +9,7 @@ import SponsorsSlider from "@/components/SponsorsSlider";
 import {GET_SPONSORS} from "@/lib/sponsors";
 
 const Home = async () => {
+  const log = new Logger();
   const schools = await fetchSchools()
     .then((values) => {
       return values;
@@ -16,7 +18,7 @@ const Home = async () => {
   const header = headers()
   const ip = process.env.NODE_ENV !== "production" ? (header.get('x-forwarded-for') ?? '127.0.0.1').split(',')[0] : (header.get('x-forwarded-for') ?? '127.0.0.1');
 
-  console.log(ip);
+  log.info('Client IP address: ',{ip: ip});
 
   return (
     <MaxWidthWrapper className='mb-12 mt-28 sm:mt-10 flex flex-col items-center justify-center'>
