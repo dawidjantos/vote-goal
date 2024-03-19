@@ -1,6 +1,9 @@
 "use server";
 
 import {db} from "@/lib/db"
+import { Logger } from 'next-axiom';
+
+const log = new Logger();
 
 export const vote = async (ip: string, schoolId: number) => {
   const isPossibile = await isPossibileToVote(ip);
@@ -14,6 +17,8 @@ export const vote = async (ip: string, schoolId: number) => {
   if (isVoted === null) {
     return {info: "error2"}
   }
+
+  log.info('Zagłosowano z adresu IP na szkołę',{ip:ip, szkola: isVoted});
 
   const findIp = await db.ips.findMany({
     where: {
