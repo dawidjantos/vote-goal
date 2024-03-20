@@ -1,9 +1,7 @@
 "use client";
 
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
-import {Card, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import {Button} from "@/components/ui/button";
-import {Loader2} from "lucide-react";
+import {Card} from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
 import * as React from "react";

@@ -9,17 +9,6 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel"
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 import {partnerInterface, sponsorInterface} from "@/lib/sponsors";
 import Image from "next/image";
 import {cn} from "@/lib/utils";
