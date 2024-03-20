@@ -1,15 +1,16 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
-import SponsorsSlider from "@/components/SponsorsSlider";
-import {GET_SPONSORS} from "@/lib/sponsors";
+import {GET_COLAB} from "@/lib/sponsors";
 
 import {getSchoolsResult} from "@/app/utils";
 import ResultsTable from "@/components/ResultsTable";
+import ColabSlider from "@/components/ColabSlider";
 
 export const revalidate = 0;
 
 const Results = async () => {
   const schools = await getSchoolsResult({etap: 1});
-  const sponsorsList = GET_SPONSORS();
+  const sponsorsList = GET_COLAB().sponsors;
+  const partnersList = GET_COLAB().partners;
 
   return (
     <MaxWidthWrapper className='mb-12 mt-28 sm:mt-10 flex flex-col items-center justify-center'>
@@ -19,9 +20,11 @@ const Results = async () => {
         className='bg-destructive/50'>czerwonym</span> są poza turniejem</h5>
       <h5 className='mt-5 w-full text-center text-blue-950'><span className='text-destructive'>Uwaga!</span> W rankingu
         uwzględnione są tylko szkoły, które mają co najmniej 1 głos</h5>
-      <h5 className='mt-5 w-full text-center text-blue-950 font-bold'>Szkołą, które się zakwalifikowały składamy serdeczne GRATULACJE i życzymy powdzenia w drugim etapie głosowania.</h5>
+      <h5 className='mt-5 w-full text-center text-blue-950 font-bold'>Szkołą, które się zakwalifikowały składamy
+        serdeczne GRATULACJE i życzymy powdzenia w drugim etapie głosowania.</h5>
       <ResultsTable schoolsTab={schools}/>
-      <SponsorsSlider sponsors={sponsorsList} orientation='horizontal'/>
+      <ColabSlider title='Sponsorzy' data={sponsorsList} orientation='horizontal'/>
+      <ColabSlider title='Partnerzy' data={partnersList} orientation='horizontal'/>
     </MaxWidthWrapper>
   )
 }

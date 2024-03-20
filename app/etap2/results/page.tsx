@@ -1,9 +1,9 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import ResultsTableEtap2 from "@/components/ResultsTableEtap2";
-import SponsorsSlider from "@/components/SponsorsSlider";
-import {GET_SPONSORS} from "@/lib/sponsors";
+import {GET_COLAB} from "@/lib/sponsors";
 
 import {getSchoolsResult} from "@/app/utils";
+import ColabSlider from "@/components/ColabSlider";
 
 export const revalidate = 0;
 
@@ -46,7 +46,8 @@ const Results = async () => {
     }
     return []
   });
-  const sponsorsList = GET_SPONSORS();
+  const sponsorsList = GET_COLAB().sponsors;
+  const partnersList = GET_COLAB().partners;
 
   return (
     <MaxWidthWrapper className='mb-12 mt-28 sm:mt-10 flex flex-col items-center justify-center'>
@@ -61,7 +62,8 @@ const Results = async () => {
       <h5 className='mt-5 w-full text-center text-blue-950 font-bold'>Wszystkim szkołą składamy
         serdeczne GRATULACJE i życzymy powdzenia w turnieju.</h5>
       <ResultsTableEtap2 schoolsTab={schools}></ResultsTableEtap2>
-      <SponsorsSlider sponsors={sponsorsList} orientation='horizontal'/>
+      <ColabSlider title='Sponsorzy' data={sponsorsList} orientation='horizontal'/>
+      <ColabSlider title='Partnerzy' data={partnersList} orientation='horizontal'/>
     </MaxWidthWrapper>
   )
 }

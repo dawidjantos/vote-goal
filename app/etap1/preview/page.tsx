@@ -9,7 +9,6 @@ export const revalidate = 0;
 
 const Preview = async () => {
   const schools = await getSchoolsResult({etap: 1});
-  const schools = await getSchoolsResult();
   const sponsorsList = GET_COLAB().sponsors;
   const partnersList = GET_COLAB().partners;
 

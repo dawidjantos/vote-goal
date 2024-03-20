@@ -1,16 +1,16 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import VotingList from "@/components/VotingList";
-import SponsorsSlider from "@/components/SponsorsSlider";
 import {fetchSchoolsEtap2} from "@/actions/fetch-schools";
-import {GET_SPONSORS} from "@/lib/sponsors";
+import {GET_COLAB} from "@/lib/sponsors";
 import {headers} from "next/headers";
+import ColabSlider from "@/components/ColabSlider";
 
 const Etap2 = async () => {
   const schools = await fetchSchoolsEtap2()
     .then((values) => {
       return values;
     });
-  const sponsorsList = GET_SPONSORS();
+  const colabList = GET_COLAB();
   const header = headers()
   const ip = process.env.NODE_ENV !== "production" ? (header.get('x-forwarded-for') ?? '127.0.0.1').split(',')[0] : (header.get('x-forwarded-for') ?? '127.0.0.1');
 
@@ -35,8 +35,9 @@ const Etap2 = async () => {
           głosowaniu: </h3>
         <div className='w-full flex flex-col lg:flex-row gap-x-3'>
           <VotingList schools={schools} ip={ip} etap={2} redirect='/etap2/preview'/>
-          <SponsorsSlider sponsors={sponsorsList} orientation='vertical' className='w-fit max-w-fit'/>
+          <ColabSlider title='Sponsorzy' data={colabList.sponsors} orientation='vertical' className='w-fit max-w-fit'/>
         </div>
+        <ColabSlider title='Partnerzy' data={colabList.partners} orientation='horizontal'/>
       </div>
     </MaxWidthWrapper>
   )

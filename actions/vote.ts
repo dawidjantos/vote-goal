@@ -5,14 +5,14 @@ import {Logger} from 'next-axiom';
 
 const log = new Logger();
 
-export const vote = async (ip: string, schoolId: number, etap: 1|2) => {
+export const vote = async (ip: string, schoolId: number, etap: 1 | 2) => {
   const isPossibile = await isPossibileToVote(ip);
 
   if (!isPossibile) {
     return {info: "error"}
   }
 
-  const isVoted = voting(schoolId, id, etap);
+  const isVoted = voting(schoolId, ip, etap);
 
   if (isVoted === null) {
     return {info: "error2"}
@@ -66,7 +66,7 @@ const addIp = async (ip: any) => {
 
 }
 
-const get_school_votes = async (school_id: number,  etap: 1|2) => {
+const get_school_votes = async (school_id: number, etap: 1 | 2) => {
   if (etap === 1) {
     const votes = await db.etap1.findMany({
       where: {
@@ -85,7 +85,7 @@ const get_school_votes = async (school_id: number,  etap: 1|2) => {
   return [];
 }
 
-const voting = async (school_id: number, ip: string, etap: 1|2) => {
+const voting = async (school_id: number, ip: string, etap: 1 | 2) => {
   const school_votes = await get_school_votes(school_id, etap);
 
   if (school_votes.length == 0) {
@@ -111,6 +111,7 @@ const voting = async (school_id: number, ip: string, etap: 1|2) => {
       }
       return []
     } catch (e) {
+      log.error("błąd głosowania, create:", {error: e})
       return null;
     }
 
@@ -147,6 +148,7 @@ const voting = async (school_id: number, ip: string, etap: 1|2) => {
       }
       return []
     } catch (e) {
+      log.error("błąd głosowania, update:", {error: e})
       return null;
     }
   }

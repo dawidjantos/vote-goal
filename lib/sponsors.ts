@@ -28,7 +28,7 @@ const colabList: collaboratorsInterface = {
       img: '/images/sponsors/1c.png',
       title: 'SYSTEMY ZABEZPIECZEŃ',
       desc: '',
-      link: 'http://tprzybylski.pl',
+      link: 'http://tprzybylski.pl/',
       width: 260,
       height: 94
     },
@@ -53,6 +53,14 @@ const colabList: collaboratorsInterface = {
       link: 'http://www.biznesliga.com.pl',
       width: 300,
       height: 100
+    },
+    {
+      img: '/images/sponsors/13c.png',
+      title: 'Tańsze Media',
+      desc: '',
+      link: 'https://tanszemedia.pl/',
+      width: 300,
+      height: 200,
     },
   ],
   partners: [
