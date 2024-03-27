@@ -35,7 +35,8 @@ const Etap1 = async () => {
           głosowaniu: </h3>
         <div className='w-full flex flex-col lg:flex-row gap-x-3'>
           <VotingList schools={schools} ip={ip} etap={1} redirect='/etap1/preview'/>
-          <ColabSlider title='Sponsorzy' data={colabList.sponsors} orientation='vertical' className='w-fit max-w-fit'/>
+          <ColabSlider title='Sponsorzy' data={colabList.sponsors} orientation='vertical'
+                       className='w-fit max-w-fit'/>
         </div>
         <ColabSlider title='Partnerzy' data={colabList.partners} orientation='horizontal'/>
       </div>
