@@ -21,9 +21,10 @@ model Schools {
 }
 
 model Ips {
-  id              Int      @id @default(autoincrement())
-  ip              String   @unique
+  id              Int        @id @default(autoincrement())
+  ip              String     @unique
   data_glosowania DateTime
+  blackList       BlackList?
 }
 
 model Etap1 {
@@ -40,4 +41,11 @@ model Etap2 {
   liczba_glosow Int
 
   szkola Schools @relation(fields: [id_szkoly], references: [id], onDelete: Cascade)
+}
+
+model BlackList {
+  id    Int @id @default(autoincrement())
+  id_ip Int @unique
+
+  ips Ips @relation(fields: [id_ip], references: [id], onDelete: NoAction)
 }

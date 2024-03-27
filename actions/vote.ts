@@ -2,14 +2,25 @@
 
 import {db} from "@/lib/db"
 import {Logger} from 'next-axiom';
+import {Prisma} from "@prisma/client";
 
 const log = new Logger();
+
+const blackListIncludeIP: Prisma.BlackListInclude = {
+  ips: true,
+}
 
 export const vote = async (ip: string, schoolId: number, etap: 1 | 2) => {
   const isPossibile = await isPossibileToVote(ip);
 
   if (!isPossibile) {
     return {info: "error"}
+  }
+
+  const isBlocked = await isBlockedIp(ip);
+
+  if (isBlocked) {
+    return {info: "error1"}
   }
 
   const isVoted = voting(schoolId, ip, etap);
@@ -43,7 +54,7 @@ export const vote = async (ip: string, schoolId: number, etap: 1 | 2) => {
 const isPossibileToVote = async (ip: string) => {
   const result = await db.ips.findMany({
     where: {
-      ip: ip
+      ip: ip,
     }
   });
 
@@ -53,6 +64,21 @@ const isPossibileToVote = async (ip: string) => {
   return !(result.length > 0 && (result[0].data_glosowania > newTime));
 
 }
+
+const isBlockedIp = async (ip: string) => {
+
+  const result = await db.blackList.findMany({
+    include: blackListIncludeIP,
+    where: {
+      ips: {
+        ip: ip
+      }
+    }
+  });
+
+  return result.length > 0;
+}
+
 
 const addIp = async (ip: any) => {
   const result = await db.ips.create({
