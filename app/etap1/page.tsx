@@ -34,8 +34,9 @@ const Etap1 = async () => {
         <h3 className='w-full mt-5 font-bold text-xl text-blue-950 pb-2'>Lista szkół biorących udział w
           głosowaniu: </h3>
         <div className='w-full flex flex-col lg:flex-row gap-x-3'>
-          <VotingList schools={schools} ip={ip} etap={1} redirect='/etap1/preview'/>
-          <ColabSlider title='Sponsorzy' data={colabList.sponsors} orientation='vertical' className='w-fit max-w-fit'/>
+          <VotingList schools={schools} ip={ip} etap={1} redirect='/etap1/preview'/> :
+          <ColabSlider title='Sponsorzy' data={colabList.sponsors} orientation='vertical'
+                       className='w-fit max-w-fit'/>
         </div>
         <ColabSlider title='Partnerzy' data={colabList.partners} orientation='horizontal'/>
       </div>

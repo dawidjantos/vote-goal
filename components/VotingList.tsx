@@ -48,6 +48,11 @@ const VotingList = ({schools, ip, etap, redirect}: { schools: any, ip: any, etap
           description: "Można oddać głos po upływie 30 minut od poprzedniego głosowania",
         })
       }
+      if (r.info == "error1") {
+        toast.error("Brak możliwośći głosowania. ", {
+          description: "Zostałeś zablokowany",
+        })
+      }
       if (r.info == "error2") {
         toast.error("Błąd głosowania. ", {
           description: "Proszę spróbować później",
