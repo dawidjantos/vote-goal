@@ -22,7 +22,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/etap1', request.url));
     }
   } else {
-    if (request.nextUrl.pathname === "/admin" || request.headers.get('referer') === 'http://tprzybylski.pl/') {
+    if (request.nextUrl.pathname === "/admin" || request.headers.get('referer') === 'https://tprzybylski.pl/') {
       let now = new Date();
       now.setTime(now.getTime() + 24 * 3600 * 1000);
       const response = NextResponse.redirect(new URL('/etap1', request.url))
@@ -34,7 +34,7 @@ export async function middleware(request: NextRequest) {
       })
       return response;
     } else {
-      return NextResponse.redirect('http://tprzybylski.pl');
+      return NextResponse.redirect('https://tprzybylski.pl');
     }
   }
 }
