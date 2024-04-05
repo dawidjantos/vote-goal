@@ -3,9 +3,11 @@ import type {NextRequest} from 'next/server'
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import {Logger} from "next-axiom";
 
+const log = new Logger();
+
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
-  const log = new Logger();
+
   const {isAuthenticated} = getKindeServerSession();
 
   if (await isAuthenticated()) {
