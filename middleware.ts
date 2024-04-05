@@ -1,13 +1,11 @@
 import {NextResponse} from 'next/server'
 import type {NextRequest} from 'next/server'
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
-import {Logger} from "next-axiom";
-
-const log = new Logger();
+import {Logger, withAxiom} from "next-axiom";
 
 // This function can be marked `async` if using `await` inside
-export async function middleware(request: NextRequest) {
-
+async function middleware(request: NextRequest) {
+  const log = new Logger();
   const {isAuthenticated} = getKindeServerSession();
 
   if (await isAuthenticated()) {
@@ -38,11 +36,13 @@ export async function middleware(request: NextRequest) {
       })
       return response;
     } else {
-      log.info('Referer: ', {referer: request.headers.get('referer')});
+     log.info('Referer: ', {referer: request.headers.get('referer')});
       return NextResponse.redirect('https://tprzybylski.pl');
     }
   }
 }
+
+export default withAxiom(middleware);
 
 export const config = {
   matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
