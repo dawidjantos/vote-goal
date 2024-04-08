@@ -15,7 +15,7 @@ const blackListIncludeIP: Prisma.BlackListInclude = {
 
 export const vote = async (ip: string, schoolId: number, etap: 1 | 2) => {
   if(etap === 1){
-    log.info("[Etap1] Głosowanie zakończone");
+    log.info("[Etap1] Głosowanie zakończone", {ip: ip});
     return {info: "error0"}
   }
   const isPossibile = await isPossibileToVote(ip);
