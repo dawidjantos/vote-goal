@@ -3,14 +3,21 @@
 import {db} from "@/lib/db"
 import {Logger} from 'next-axiom';
 import {Prisma} from "@prisma/client";
+import {GET_SETTINGS} from "@/lib/settings";
 
 const log = new Logger();
+
+const settings = GET_SETTINGS();
 
 const blackListIncludeIP: Prisma.BlackListInclude = {
   ips: true,
 }
 
 export const vote = async (ip: string, schoolId: number, etap: 1 | 2) => {
+  if(etap === 1){
+    log.info("[Etap1] Głosowanie zakończone");
+    return {info: "error0"}
+  }
   const isPossibile = await isPossibileToVote(ip);
 
   if (!isPossibile) {

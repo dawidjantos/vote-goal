@@ -38,6 +38,12 @@ const VotingList = ({schools, ip, etap, redirect}: { schools: any, ip: any, etap
         return updated;
       })
 
+      if (r.info == "error0") {
+        toast.error("Brak możliwośći głosowania. ", {
+          description: "Głosowanie zakończone",
+        })
+      }
+
       if (r.info == "error") {
         toast.error("Brak możliwośći głosowania. ", {
           description: "Można oddać głos po upływie 30 minut od poprzedniego głosowania",
