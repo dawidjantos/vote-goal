@@ -6,8 +6,12 @@ import {fetchSchoolsEtap1} from "@/actions/fetch-schools";
 import {headers} from 'next/headers'
 import {GET_COLAB} from "@/lib/sponsors";
 import ColabSlider from "@/components/ColabSlider";
+import {GET_SETTINGS} from "@/lib/settings";
+import {Button} from "@/components/ui/button";
+import Link from "next/link";
 
 const Etap1 = async () => {
+  const settings = GET_SETTINGS()
   const schools = await fetchSchoolsEtap1()
     .then((values) => {
       return values;
@@ -34,7 +38,15 @@ const Etap1 = async () => {
         <h3 className='w-full mt-5 font-bold text-xl text-blue-950 pb-2'>Lista szkół biorących udział w
           głosowaniu: </h3>
         <div className='w-full flex flex-col lg:flex-row gap-x-3'>
-          <VotingList schools={schools} ip={ip} etap={1} redirect='/etap1/preview'/>
+          {settings.voting.etap1 ?
+            <VotingList schools={schools} ip={ip} etap={1} redirect='/etap1/preview'/>
+            :
+            <div className='w-full flex flex-col gap-y-10 items-center'>
+              <h2 className='mt-20 font-bold text-4xl text-destructive w-full text-center sm:text-5xl'>Głosowanie
+                zakończone</h2>
+              <Link href='/etap1/results'><Button className='w-fit'>Zobacz wyniki</Button></Link>
+            </div>
+          }
           <ColabSlider title='Sponsorzy' data={colabList.sponsors} orientation='vertical'
                        className='w-fit max-w-fit'/>
         </div>

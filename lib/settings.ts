@@ -1,6 +1,6 @@
 const settings = {
   voting: {
-    etap1: true,
+    etap1: false,
     etap2: false
   }
 }
