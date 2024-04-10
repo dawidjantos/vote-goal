@@ -31,15 +31,17 @@ const VotingList = ({schools, ip, etap, redirect}: { schools: any, ip: any, etap
   const colabList = GET_COLAB().partners.concat(GET_COLAB().sponsors);
 
   const rand = Math.floor(Math.random() * colabList.length);
+  let interval: any;
 
   useEffect(() => {
-    setInterval(() => setTime(new Date()), 1000);
+    interval = setInterval(() => setTime(new Date()), 1000);
   }, []);
 
   useEffect(() => {
     if (time <= settings.voting.etap2.start) {
       setStartVoting(false);
     } else {
+      clearInterval(interval);
       setStartVoting(true);
     }
   }, [time]);
@@ -88,7 +90,8 @@ const VotingList = ({schools, ip, etap, redirect}: { schools: any, ip: any, etap
   return (
     !startVoting ?
       <div className='flex w-full mt-2 mb-7 flex-col gap-5'>
-        <p className='text-center mt-10 font-bold text-4xl text-destructive sm:text-5xl'>Głosowanie rozpocznie się o 12:00:00</p>
+        <p className='text-center mt-10 font-bold text-4xl text-destructive sm:text-5xl'>Głosowanie rozpocznie się o
+          12:00:00</p>
       </div>
       :
       <div className='flex w-full mt-2 mb-7 flex-col gap-5'>
