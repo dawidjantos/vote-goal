@@ -11,23 +11,38 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import {Button} from "@/components/ui/button";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {vote} from "@/actions/vote";
 import {toast} from "sonner"
 import {useRouter} from 'next/navigation'
 import SponsorCard from "@/components/SponsorCard";
 import {Loader2} from "lucide-react"
 import {GET_COLAB} from "@/lib/sponsors";
+import {GET_SETTINGS} from "@/lib/settings";
 
 const VotingList = ({schools, ip, etap, redirect}: { schools: any, ip: any, etap: 1 | 2, redirect: string }) => {
-
+  const settings = GET_SETTINGS();
   const [open, setOpen] = useState(false);
+  const [startVoting, setStartVoting] = useState(false);
+  const [time, setTime] = useState(new Date());
   const [loading, setLoading] = useState(new Set());
   const router = useRouter();
 
   const colabList = GET_COLAB().partners.concat(GET_COLAB().sponsors);
 
   const rand = Math.floor(Math.random() * colabList.length);
+
+  useEffect(() => {
+    setInterval(() => setTime(new Date()), 1000);
+  }, []);
+
+  useEffect(() => {
+    if (time <= settings.voting.etap2.start) {
+      setStartVoting(false);
+    } else {
+      setStartVoting(true);
+    }
+  }, [time]);
 
   const onClick = (value: string, index: number) => {
     setLoading((prev) => new Set([prev, index]))
@@ -71,9 +86,14 @@ const VotingList = ({schools, ip, etap, redirect}: { schools: any, ip: any, etap
   }
 
   return (
-    <div className='flex w-full mt-2 mb-7 flex-col gap-5'>
-      {schools ?
-        schools.map((school: any, index: number) => {
+    !startVoting ?
+      <div className='flex w-full mt-2 mb-7 flex-col gap-5'>
+        <p className='text-center mt-10 font-bold text-4xl text-destructive sm:text-5xl'>Głosowanie rozpocznie się o 12:00:00</p>
+      </div>
+      :
+      <div className='flex w-full mt-2 mb-7 flex-col gap-5'>
+        {schools ?
+          schools.map((school: any, index: number) => {
             return (
               <Card className='flex w-full items-center justify-between bg-blue-100/80' key={index}>
                 <CardHeader>
@@ -86,30 +106,30 @@ const VotingList = ({schools, ip, etap, redirect}: { schools: any, ip: any, etap
                 </CardFooter>
               </Card>
             )
-        }) : ''
-      }
-      <AlertDialog open={open} onOpenChange={setOpen}>
-        <AlertDialogContent className='bg-blue-100 border-blue-900 sm:text-center'>
-          <AlertDialogHeader className='sm:text-center'>
-            <AlertDialogTitle className='text-2xl text-blue-950'>Dziękujemy za oddany głos !!!</AlertDialogTitle>
-            <AlertDialogDescription className='text-lg text-gray-700'>
-              Sponsorem VIII edycji turnieju piłkarskiego &quot;Bezpieczna szkoła za gola&quot; jest:
-            </AlertDialogDescription>
-            <SponsorCard
-              img={colabList[rand].img}
-              title={colabList[rand].title}
-              link={colabList[rand].link}
-              width={colabList[rand].width}
-              height={colabList[rand].height}
-              benefits={colabList[rand].benefits}
-            />
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogAction onClick={() => closeDialog()}>OK</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </div>
+          }) : ''
+        }
+        <AlertDialog open={open} onOpenChange={setOpen}>
+          <AlertDialogContent className='bg-blue-100 border-blue-900 sm:text-center'>
+            <AlertDialogHeader className='sm:text-center'>
+              <AlertDialogTitle className='text-2xl text-blue-950'>Dziękujemy za oddany głos !!!</AlertDialogTitle>
+              <AlertDialogDescription className='text-lg text-gray-700'>
+                Sponsorem VIII edycji turnieju piłkarskiego &quot;Bezpieczna szkoła za gola&quot; jest:
+              </AlertDialogDescription>
+              <SponsorCard
+                img={colabList[rand].img}
+                title={colabList[rand].title}
+                link={colabList[rand].link}
+                width={colabList[rand].width}
+                height={colabList[rand].height}
+                benefits={colabList[rand].benefits}
+              />
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogAction onClick={() => closeDialog()}>OK</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
   );
 };
 

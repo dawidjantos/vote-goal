@@ -4,6 +4,7 @@ import {fetchSchoolsEtap2} from "@/actions/fetch-schools";
 import {GET_COLAB} from "@/lib/sponsors";
 import {headers} from "next/headers";
 import ColabSlider from "@/components/ColabSlider";
+import {GET_SETTINGS} from "@/lib/settings";
 
 const Etap2 = async () => {
   const schools = await fetchSchoolsEtap2()
@@ -18,7 +19,9 @@ const Etap2 = async () => {
   return (
     <MaxWidthWrapper className='mb-12 mt-28 sm:mt-10 flex flex-col items-center justify-center'>
       <h2 className='mt-2 font-bold text-4xl text-blue-950 sm:text-5xl'> Etap 2</h2>
-      <h5 className='mt-10 w-full text-center text-blue-950 font-bold'><span className='text-destructive'>Uwaga!</span> W głosowaniu w drugim etapie bierzę udział tylko pierwsze 8 szkół z największą ilością głosów z pierwszego etapu.</h5>
+      <h5 className='mt-10 w-full text-center text-blue-950 font-bold'><span
+        className='text-destructive'>Uwaga!</span> W głosowaniu w drugim etapie bierzę udział tylko pierwsze 8 szkół z
+        największą ilością głosów z pierwszego etapu.</h5>
       <div className='w-full flex flex-col pt-16'>
         <h3 className='font-bold text-xl text-blue-950 pb-2'>Jak głosować?</h3>
         <ul className='text-lg text-blue-950 pb-2'>
