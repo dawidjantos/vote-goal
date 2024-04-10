@@ -49,8 +49,11 @@ const Preview = async () => {
   return (
     <MaxWidthWrapper className='mb-12 mt-28 sm:mt-10 flex flex-col items-center justify-center'>
       <h2 className='mt-2 font-bold text-2xl text-blue-950 sm:text-3xl lg:text-4xl'>Tabela aktualnych wyników</h2>
-      <h5 className='mt-5 w-full text-center text-blue-950'>Szkoła oznaczone kolorem <span
-        className='bg-yellow-400'>złotym</span> jest aktualnym liderem w głosowaniu o Złotą Kartę.</h5>
+      <h5 className='mt-5 w-full text-center text-blue-950'>Szkoła oznaczona kolorem <span
+        className='bg-yellow-400'>złotym</span> jest aktualnym liderem w głosowaniu o Złotą Kartę i jest w grupie A, szkoły oznaczone
+        kolorem <span
+          className='bg-blue-600/50'>niebieskim</span> są w grupie A, natomiast oznaczone kolorem <span
+          className='bg-green-600/50'>zielonym</span> są w grupie B</h5>
       <h5 className='mt-5 w-full text-center text-blue-950'><span className='text-destructive'>Uwaga!</span> W rankingu
         uwzględnione są tylko szkoły, które mają co najmniej 1 głos</h5>
       <PreviewTableEtap2 schoolsTab={schools}></PreviewTableEtap2>
