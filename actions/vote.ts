@@ -139,7 +139,7 @@ const voting = async (school_id: number, ip: string, etap: 1 | 2) => {
             liczba_glosow: 1
           }
         });
-        log.info('Zagłosowano z adresu IP na szkołę', {ip: ip, szkola_id: school_id});
+        log.info('[Etap2] Zagłosowano z adresu IP na szkołę', {ip: ip, szkola_id: school_id});
         return res;
       }
       return []
@@ -176,7 +176,7 @@ const voting = async (school_id: number, ip: string, etap: 1 | 2) => {
             }
           }
         });
-        log.info('Zagłosowano z adresu IP na szkołę', {ip: ip, szkola_id: school_id});
+        log.info('[Etap2] Zagłosowano z adresu IP na szkołę', {ip: ip, szkola_id: school_id});
         return res;
       }
       return []
