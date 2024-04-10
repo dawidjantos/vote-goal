@@ -14,20 +14,22 @@ async function middleware(request: NextRequest) {
     if (
       request.nextUrl.pathname.startsWith('/api')  ||
       request.nextUrl.pathname === "/admin" ||
-      request.nextUrl.pathname === "/etap1/results" ||
       request.nextUrl.pathname === "/etap1" ||
+      request.nextUrl.pathname === "/etap1/results" ||
+      request.nextUrl.pathname === "/etap2" ||
+      request.nextUrl.pathname === "/etap2/preview" ||
       request.nextUrl.pathname === "/sponsors" ||
       request.nextUrl.pathname.startsWith('/_axiom')
     ) {
       return NextResponse.next();
     } else {
-      return NextResponse.redirect(new URL('/etap1/results', request.url));
+      return NextResponse.redirect(new URL('/etap2', request.url));
     }
   } else {
     if (request.nextUrl.pathname === "/admin" || request.headers.get('referer') === 'https://tprzybylski.pl/') {
       let now = new Date();
       now.setTime(now.getTime() + 24 * 3600 * 1000);
-      const response = NextResponse.redirect(new URL('/etap1/results', request.url))
+      const response = NextResponse.next();
       response.cookies.set({
         name: 'referer',
         value: 'referer',
