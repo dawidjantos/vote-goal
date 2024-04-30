@@ -1,6 +1,8 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import {meczeActions} from "@/actions/mecze-actions";
-import MatchTable from "@/components/MatchTable";
+import dynamic from "next/dynamic";
+
+const MatchTable = dynamic(() => import('../../components/MatchTable'), {ssr: false});
 
 const TurniejPage = async () => {
   const grupaA = await meczeActions({faza: "grupa", grupa: "A"});

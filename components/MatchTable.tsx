@@ -14,19 +14,28 @@ import {
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
 import {useState} from "react";
-import {saveMatchResultAction} from "@/actions/mecze-actions";
+import {saveMatchDateAction, saveMatchResultAction} from "@/actions/mecze-actions";
 import {toast} from "sonner";
 
 
 const MatchTable = ({mecze, grupa}: { mecze: Array<any>, grupa: string }) => {
   const {isAuthenticated} = useKindeBrowserClient();
-  const [open, setOpen] = useState(false);
+  const [openResultDialog, setOpenResultDialog] = useState(false);
+  const [openDateDialog, setOpenDateDialog] = useState(false);
   const [matchDetails, setMatchDetails] = useState(mecze[0]);
+  const [matchDate, setMatchDate] = useState(mecze[0]);
   const [wynikSzkola1, setWynikSzkola1] = useState(Number);
   const [wynikSzkola2, setWynikSzkola2] = useState(Number);
+  const [date, setDate] = useState(Date);
+
   const editMatchResultDialog = (match: any) => {
     setMatchDetails(match);
-    setOpen(prevState => !prevState)
+    setOpenResultDialog(prevState => !prevState)
+  }
+
+  const editMatchDateDialog = (match: any) => {
+    setMatchDate(match);
+    setOpenDateDialog(prevState => !prevState)
   }
 
   const saveMatchResult = () => {
@@ -36,11 +45,26 @@ const MatchTable = ({mecze, grupa}: { mecze: Array<any>, grupa: string }) => {
       wynik_szkola2: wynikSzkola2,
     }).then(res => {
       if (res.info === "success") {
-        setOpen(prevState => !prevState);
+        setOpenResultDialog(prevState => !prevState);
         toast.success("Zapisano wynik meczu")
       } else {
-        setOpen(prevState => !prevState);
+        setOpenResultDialog(prevState => !prevState);
         toast.error("Nie udało się zapisać wyniku meczu");
+      }
+    })
+  }
+
+  const saveMatchDate = () => {
+    saveMatchDateAction({
+      id: matchDate.id,
+      date: new Date(date)
+    }).then(res => {
+      if (res.info === "success") {
+        setOpenDateDialog(prevState => !prevState);
+        toast.success("Zapisano datę meczu")
+      } else {
+        setOpenDateDialog(prevState => !prevState);
+        toast.error("Nie udało się zapisać daty meczu");
       }
     })
   }
@@ -73,62 +97,40 @@ const MatchTable = ({mecze, grupa}: { mecze: Array<any>, grupa: string }) => {
         <TableBody>
           {mecze ?
             mecze.map((mecz: any, index: number) => {
-              if (grupa === "A")
-                return (
-                  <TableRow key={mecz.id} className='bg-blue-600/30'>
-                    <TableCell className="font-medium text-blue-950 text-center text-lg">{index + 1}</TableCell>
+              return (
+                <TableRow key={mecz.id}
+                          className={mecz.wynik_szkola1 !== null ? grupa === "A" ? 'bg-blue-600/30' : 'bg-green-600/30' : grupa === "A" ? 'bg-blue-600/20' : 'bg-green-600/20'}>
+                  <TableCell
+                    className={`font-medium ${grupa === "A" ? 'text-blue-950' : 'text-green-950'} text-center text-lg`}>{index + 1}</TableCell>
+                  <TableCell
+                    className={`font-medium ${grupa === "A" ? 'text-blue-950' : 'text-green-950'} text-center text-lg`}>{mecz.mecz_id_szkola1.skrot} - {mecz.mecz_id_szkola2.skrot}
+                  </TableCell>
+                  <TableCell
+                    className={`font-medium ${grupa === "A" ? 'text-blue-950' : 'text-green-950'} text-center text-lg`}>{mecz.data_meczu ? `${mecz.data_meczu.toLocaleDateString()} ${mecz.data_meczu.toLocaleTimeString()}` : '-'}
+                  </TableCell>
+                  <TableCell
+                    className={`font-bold ${grupa === "A" ? 'text-blue-950' : 'text-green-950'} text-center text-lg`}>
+                    {mecz.wynik_szkola1 === null || mecz.wynik_szkola2 === null ?
+                      "-"
+                      :
+                      `${mecz.wynik_szkola1} : ${mecz.wynik_szkola2}`
+                    }
+                  </TableCell>
+                  {isAuthenticated ?
                     <TableCell
-                      className="font-medium text-blue-950 text-center text-lg">{mecz.mecz_id_szkola1.skrot} - {mecz.mecz_id_szkola2.skrot}
+                      className="flex flex-col gap-y-3 text-blue-950 text-center text-lg font-bold">
+                      <Button variant={grupa === "A" ? 'default' : 'green'} onClick={() => editMatchResultDialog(mecz)}>Edytuj
+                        wynik</Button>
+                      <Button variant={grupa === "A" ? 'default' : 'green'} onClick={() => editMatchDateDialog(mecz)}>Edytuj
+                        datę</Button>
                     </TableCell>
-                    <TableCell
-                      className="font-medium text-blue-950 text-center text-lg">{mecz.data_meczu ? mecz.data_meczu: '-'}
-                    </TableCell>
-                    <TableCell
-                      className="text-blue-950 text-center text-lg font-bold">
-                      {mecz.wynik_szkola1 === null || mecz.wynik_szkola2 === null ?
-                        "-"
-                        :
-                        `${mecz.wynik_szkola1} : ${mecz.wynik_szkola2}`
-                      }
-                    </TableCell>
-                    {isAuthenticated ?
-                      <TableCell
-                        className="flex flex-col gap-y-3 text-blue-950 text-center text-lg font-bold">
-                        <Button onClick={() => editMatchResultDialog(mecz)}>Edytuj wynik</Button>
-                      </TableCell>
-                      : null}
-                  </TableRow>
-                )
-              if (grupa === "B")
-                return (
-                  <TableRow key={mecz.id} className='bg-green-600/30'>
-                    <TableCell className="font-medium text-green-950 text-center text-lg">{index + 1}</TableCell>
-                    <TableCell
-                      className="font-medium text-green-950 text-center text-lg">{mecz.mecz_id_szkola1.skrot} - {mecz.mecz_id_szkola2.skrot}
-                    </TableCell>
-                    <TableCell
-                      className="font-medium text-green-950 text-center text-lg">{mecz.data_meczu ? mecz.data_meczu: '-'}
-                    </TableCell>
-                    <TableCell
-                      className="text-green-950 text-center text-lg font-bold">
-                      {mecz.wynik_szkola1 === null || mecz.wynik_szkola2 === null ?
-                        "-"
-                        :
-                        `${mecz.wynik_szkola1} : ${mecz.wynik_szkola2}`
-                      }
-                    </TableCell>
-                    {isAuthenticated ?
-                      <TableCell
-                        className="flex flex-col gap-y-3 text-green-950 text-center text-lg font-bold">
-                        <Button variant='green' onClick={() => editMatchResultDialog(mecz)}>Edytuj wynik</Button>
-                      </TableCell>
-                      : null}
-                  </TableRow>
-                )
+                    : null}
+                </TableRow>
+              )
             }) : ''}
         </TableBody>
       </Table>
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={openResultDialog} onOpenChange={setOpenResultDialog}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Edytuj wynik meczu</DialogTitle>
@@ -167,6 +169,37 @@ const MatchTable = ({mecze, grupa}: { mecze: Array<any>, grupa: string }) => {
               </Button>
             </DialogClose>
             <Button type="submit" onClick={() => saveMatchResult()}>Zapisz</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={openDateDialog} onOpenChange={setOpenDateDialog}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Edytuj datę meczu</DialogTitle>
+            <DialogDescription>
+              Wprowadź datę meczu i zatwierdź przyciskiem Zapisz
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-1 items-center gap-4">
+              <Label htmlFor="date_metch" className="text-center">
+                {matchDate ? matchDate.mecz_id_szkola1.skrot + " - " + matchDate.mecz_id_szkola2.skrot : null}
+              </Label>
+              <Input
+                type='datetime-local'
+                id="date_metch"
+                className="col-span-3 text-center grid"
+                onChange={(e) => setDate(e.target.value)}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="secondary">
+                Anuluj
+              </Button>
+            </DialogClose>
+            <Button type="submit" onClick={() => saveMatchDate()}>Zapisz</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

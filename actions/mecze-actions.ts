@@ -47,3 +47,23 @@ export const saveMatchResultAction = async ({id, wynik_szkola1, wynik_szkola2}: 
     return {info: "error"}
   }
 }
+
+export const saveMatchDateAction = async ({id, date}: {
+  id: number,
+  date: Date
+}) => {
+  try {
+    const res = await db.mecze.update({
+      where: {
+        id: id
+      },
+      data: {
+        data_meczu: date
+      }
+    });
+    revalidatePath('/turniej')
+    return {info: "success"}
+  } catch (e) {
+    return {info: "error"}
+  }
+}
