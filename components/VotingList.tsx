@@ -19,6 +19,7 @@ import SponsorCard from "@/components/SponsorCard";
 import {Loader2} from "lucide-react"
 import {GET_COLAB} from "@/lib/sponsors";
 import {GET_SETTINGS} from "@/lib/settings";
+import Link from "next/link";
 
 const VotingList = ({schools, ip, etap, redirect}: { schools: any, ip: any, etap: 1 | 2, redirect: string }) => {
   const settings = GET_SETTINGS();
@@ -59,10 +60,10 @@ const VotingList = ({schools, ip, etap, redirect}: { schools: any, ip: any, etap
         toast.error("Brak możliwośći głosowania. ", {
           description: "Głosowanie zakończone",
         })
-        if (etap===1){
+        if (etap === 1) {
           router.push('/etap1/results')
         }
-        if (etap===2){
+        if (etap === 2) {
           router.push('/etap2/results')
         }
       }
@@ -95,7 +96,7 @@ const VotingList = ({schools, ip, etap, redirect}: { schools: any, ip: any, etap
 
   return (
     !startVoting ?
-      <div className='flex w-full mt-2 mb-7 flex-col gap-5'>
+      <div className='flex w-full mt-2 mb-7 flex-col gap-5 items-center'>
         <p className='text-center mt-10 font-bold text-4xl text-destructive sm:text-5xl'>
           {
             time <= settings.voting.etap2.start ? "Głosowanie rozpocznie się o 12:00:00" : ""
@@ -103,7 +104,12 @@ const VotingList = ({schools, ip, etap, redirect}: { schools: any, ip: any, etap
           {
             time >= settings.voting.etap2.end ? "Głosowanie zakończone" : ""
           }
-          </p>
+        </p>
+        {time >= settings.voting.etap2.end && etap === 2 ?
+          <Link href='/etap2/results'><Button className='mt-7 w-fit'>Zobacz wyniki</Button></Link>
+          :
+          null
+        }
       </div>
       :
       <div className='flex w-full mt-2 mb-7 flex-col gap-5'>
