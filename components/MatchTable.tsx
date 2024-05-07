@@ -71,7 +71,7 @@ const MatchTable = ({mecze, grupa}: { mecze: Array<any>, grupa: string }) => {
 
   return (
     <>
-      <Table>
+      <Table className='mb-7'>
         <TableHeader>
           {grupa === "A" ?
             <TableRow className='bg-blue-600/50'>
