@@ -1,23 +1,24 @@
-// prisma/schema.prisma
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  // uncomment next line if you use Prisma <5.10
-  // directUrl = env("DATABASE_URL_UNPOOLED")
-}
-
 generator client {
   provider = "prisma-client-js"
 }
 
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
 model Schools {
-  id           Int     @id @default(autoincrement())
-  name         String
-  address      String
-  voting_etap1 Boolean @default(true)
-  voting_etap2 Boolean @default(false)
-  etap1        Etap1?
-  etap2        Etap2?
+  id              Int     @id @default(autoincrement())
+  name            String
+  skrot           String?
+  grupa           String?
+  address         String
+  voting_etap1    Boolean @default(true)
+  voting_etap2    Boolean @default(false)
+  etap1           Etap1?
+  etap2           Etap2?
+  mecz_id_szkola1 Mecze[] @relation("mecz_id_szkola1")
+  mecz_id_szkola2 Mecze[] @relation("mecz_id_szkola2")
 }
 
 model Ips {
@@ -28,24 +29,35 @@ model Ips {
 }
 
 model Etap1 {
-  id            Int @id @default(autoincrement())
-  id_szkoly     Int @unique
+  id            Int     @id @default(autoincrement())
+  id_szkoly     Int     @unique
   liczba_glosow Int
-
-  szkola Schools @relation(fields: [id_szkoly], references: [id], onDelete: Cascade)
+  szkola        Schools @relation(fields: [id_szkoly], references: [id], onDelete: Cascade)
 }
 
 model Etap2 {
-  id            Int @id @default(autoincrement())
-  id_szkoly     Int @unique
+  id            Int     @id @default(autoincrement())
+  id_szkoly     Int     @unique
   liczba_glosow Int
-
-  szkola Schools @relation(fields: [id_szkoly], references: [id], onDelete: Cascade)
+  szkola        Schools @relation(fields: [id_szkoly], references: [id], onDelete: Cascade)
 }
 
 model BlackList {
   id    Int @id @default(autoincrement())
   id_ip Int @unique
+  ips   Ips @relation(fields: [id_ip], references: [id], onDelete: NoAction)
+}
 
-  ips Ips @relation(fields: [id_ip], references: [id], onDelete: NoAction)
+model Mecze {
+  id            Int       @id @default(autoincrement())
+  faza          String
+  grupa         String
+  id_szkola1    Int
+  wynik_szkola1 Int?
+  id_szkola2    Int
+  wynik_szkola2 Int?
+  data_meczu    DateTime?
+
+  mecz_id_szkola1 Schools @relation("mecz_id_szkola1", fields: [id_szkola1], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mecz_id_szkola2 Schools @relation("mecz_id_szkola2", fields: [id_szkola2], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }

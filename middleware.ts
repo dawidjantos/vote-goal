@@ -8,11 +8,15 @@ async function middleware(request: NextRequest) {
   const log = new Logger();
   const {isAuthenticated} = getKindeServerSession();
 
+  if (process.env.NODE_ENV !== "production") {
+    return NextResponse.next();
+  }
+
   if (await isAuthenticated()) {
     return NextResponse.next();
   } else if (request.cookies.has('referer')) {
     if (
-      request.nextUrl.pathname.startsWith('/api')  ||
+      request.nextUrl.pathname.startsWith('/api') ||
       request.nextUrl.pathname === "/admin" ||
       request.nextUrl.pathname === "/etap1" ||
       request.nextUrl.pathname === "/etap1/results" ||
@@ -20,6 +24,7 @@ async function middleware(request: NextRequest) {
       request.nextUrl.pathname === "/etap2/preview" ||
       request.nextUrl.pathname === "/etap2/results" ||
       request.nextUrl.pathname === "/sponsors" ||
+      request.nextUrl.pathname === "/turniej" ||
       request.nextUrl.pathname.startsWith('/_axiom')
     ) {
       return NextResponse.next();
@@ -39,7 +44,7 @@ async function middleware(request: NextRequest) {
       })
       return response;
     } else {
-     log.info('Referer: ', {referer: request.headers.get('referer')});
+      log.info('Referer: ', {referer: request.headers.get('referer')});
       return NextResponse.redirect('https://tprzybylski.pl');
     }
   }
