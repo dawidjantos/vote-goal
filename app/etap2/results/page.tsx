@@ -1,13 +1,19 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import ResultsTableEtap2 from "@/components/ResultsTableEtap2";
 import {GET_COLAB} from "@/lib/sponsors";
+import {GET_SETTINGS} from "@/lib/settings";
 
 import {getSchoolsResult} from "@/app/utils";
 import ColabSlider from "@/components/ColabSlider";
+import {redirect} from "next/navigation";
 
 export const revalidate = 0;
 
 const Results = async () => {
+  const {isAuthenticated} = getKindeServerSession();
+  const settings = GET_SETTINGS();
+  const time = new Date();
   const schools = await getSchoolsResult({etap: 2}).then(schools => {
     if (schools !== undefined && schools.length >= 0) {
       const schoolsMap = schools.map((school, index) => {
@@ -48,6 +54,10 @@ const Results = async () => {
   });
   const sponsorsList = GET_COLAB().sponsors;
   const partnersList = GET_COLAB().partners;
+
+  if (time <= settings.voting.etap2.end && !await isAuthenticated()) {
+    redirect("/etap2/preview")
+  }
 
   return (
     <MaxWidthWrapper className='mb-12 mt-28 sm:mt-10 flex flex-col items-center justify-center'>
