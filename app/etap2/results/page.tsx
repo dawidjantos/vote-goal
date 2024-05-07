@@ -1,13 +1,20 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import ResultsTableEtap2 from "@/components/ResultsTableEtap2";
 import {GET_COLAB} from "@/lib/sponsors";
+import {GET_SETTINGS} from "@/lib/settings";
 
 import {getSchoolsResult} from "@/app/utils";
 import ColabSlider from "@/components/ColabSlider";
+import {redirect} from "next/navigation";
+import GroupTable from "@/components/GroupTable";
 
 export const revalidate = 0;
 
 const Results = async () => {
+  const {isAuthenticated} = getKindeServerSession();
+  const settings = GET_SETTINGS();
+  const time = new Date();
   const schools = await getSchoolsResult({etap: 2}).then(schools => {
     if (schools !== undefined && schools.length >= 0) {
       const schoolsMap = schools.map((school, index) => {
@@ -39,7 +46,14 @@ const Results = async () => {
             gold_card: false,
           }
         } else {
-          return school
+          return {
+            id: school.id,
+            id_szkoly: school.id_szkoly,
+            szkola: school.szkola,
+            liczba_glosow: school.liczba_glosow,
+            grupa: "",
+            gold_card: false,
+          }
         }
       });
       return schoolsMap;
@@ -48,6 +62,10 @@ const Results = async () => {
   });
   const sponsorsList = GET_COLAB().sponsors;
   const partnersList = GET_COLAB().partners;
+
+  if (time <= settings.voting.etap2.end && !await isAuthenticated()) {
+    redirect("/etap2/preview")
+  }
 
   return (
     <MaxWidthWrapper className='mb-12 mt-28 sm:mt-10 flex flex-col items-center justify-center'>
@@ -62,6 +80,11 @@ const Results = async () => {
       <h5 className='mt-5 w-full text-center text-blue-950 font-bold'>Wszystkim szkołą składamy
         serdeczne GRATULACJE i życzymy powdzenia w turnieju.</h5>
       <ResultsTableEtap2 schoolsTab={schools}></ResultsTableEtap2>
+      <h2 className='mt-2 mb-7 font-bold text-2xl text-blue-950 sm:text-3xl lg:text-4xl'>Składy grup</h2>
+      <div className='w-full flex gap-5 mb-5'>
+        <GroupTable schools={schools.filter(school => school.grupa === "A")} grupa={"A"}/>
+        <GroupTable schools={schools.filter(school => school.grupa === "B")} grupa={"B"}/>
+      </div>
       <ColabSlider title='Sponsorzy' data={sponsorsList} orientation='horizontal'/>
       <ColabSlider title='Partnerzy' data={partnersList} orientation='horizontal'/>
     </MaxWidthWrapper>
