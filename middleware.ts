@@ -18,12 +18,13 @@ async function middleware(request: NextRequest) {
       request.nextUrl.pathname === "/etap1/results" ||
       request.nextUrl.pathname === "/etap2" ||
       request.nextUrl.pathname === "/etap2/preview" ||
+      request.nextUrl.pathname === "/etap2/results" ||
       request.nextUrl.pathname === "/sponsors" ||
       request.nextUrl.pathname.startsWith('/_axiom')
     ) {
       return NextResponse.next();
     } else {
-      return NextResponse.redirect(new URL('/etap2', request.url));
+      return NextResponse.redirect(new URL('/etap2/results', request.url));
     }
   } else {
     if (request.nextUrl.pathname === "/admin" || request.headers.get('referer') === 'https://tprzybylski.pl/') {

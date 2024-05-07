@@ -38,7 +38,7 @@ const VotingList = ({schools, ip, etap, redirect}: { schools: any, ip: any, etap
   }, []);
 
   useEffect(() => {
-    if (time <= settings.voting.etap2.start) {
+    if (time <= settings.voting.etap2.start || time >= settings.voting.etap2.end) {
       setStartVoting(false);
     } else {
       clearInterval(interval);
@@ -59,6 +59,12 @@ const VotingList = ({schools, ip, etap, redirect}: { schools: any, ip: any, etap
         toast.error("Brak możliwośći głosowania. ", {
           description: "Głosowanie zakończone",
         })
+        if (etap===1){
+          router.push('/etap1/results')
+        }
+        if (etap===2){
+          router.push('/etap2/results')
+        }
       }
 
       if (r.info == "error") {
@@ -90,8 +96,14 @@ const VotingList = ({schools, ip, etap, redirect}: { schools: any, ip: any, etap
   return (
     !startVoting ?
       <div className='flex w-full mt-2 mb-7 flex-col gap-5'>
-        <p className='text-center mt-10 font-bold text-4xl text-destructive sm:text-5xl'>Głosowanie rozpocznie się o
-          12:00:00</p>
+        <p className='text-center mt-10 font-bold text-4xl text-destructive sm:text-5xl'>
+          {
+            time <= settings.voting.etap2.start ? "Głosowanie rozpocznie się o 12:00:00" : ""
+          }
+          {
+            time >= settings.voting.etap2.end ? "Głosowanie zakończone" : ""
+          }
+          </p>
       </div>
       :
       <div className='flex w-full mt-2 mb-7 flex-col gap-5'>
