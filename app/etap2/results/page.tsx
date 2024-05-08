@@ -63,9 +63,6 @@ const Results = async () => {
   const sponsorsList = GET_COLAB().sponsors;
   const partnersList = GET_COLAB().partners;
 
-  if (time <= settings.voting.etap2.end && !await isAuthenticated()) {
-    redirect("/etap2/preview")
-  }
 
   return (
     <MaxWidthWrapper className='mb-12 mt-28 sm:mt-10 flex flex-col items-center justify-center'>
