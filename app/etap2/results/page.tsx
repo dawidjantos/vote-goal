@@ -78,7 +78,7 @@ const Results = async () => {
         serdeczne GRATULACJE i życzymy powdzenia w turnieju.</h5>
       <ResultsTableEtap2 schoolsTab={schools}></ResultsTableEtap2>
       <h2 className='mt-2 mb-7 font-bold text-2xl text-blue-950 sm:text-3xl lg:text-4xl'>Składy grup</h2>
-      <div className='w-full flex gap-5 mb-5'>
+      <div className='w-full flex flex-col lg:flex-row gap-5 mb-5'>
         <GroupTable schools={schools.filter(school => school.grupa === "A")} grupa={"A"}/>
         <GroupTable schools={schools.filter(school => school.grupa === "B")} grupa={"B"}/>
       </div>
