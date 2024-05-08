@@ -20,7 +20,7 @@ export const vote = async (ip: string, schoolId: number, etap: 1 | 2) => {
     return {info: "error0"}
   }
 
-  if(etap === 2 && time >= settings.voting.etap2.end){
+  if(etap === 2){
     log.info("[Etap2] Głosowanie zakończone", {ip: ip, szkola_id: schoolId});
     return {info: "error0"}
   }
